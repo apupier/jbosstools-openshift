@@ -124,8 +124,6 @@ public class OpenShiftServerEditorSection extends ServerEditorSection {
 	public void createSection(Composite parent) {
 		super.createSection(parent);
 
-		disableHostName();
-
 		FormToolkit toolkit = new FormToolkit(parent.getDisplay());
 
 		Section section = toolkit.createSection(parent,
@@ -151,25 +149,6 @@ public class OpenShiftServerEditorSection extends ServerEditorSection {
 
 		loadResources(section, model);
 
-	}
-
-	/**
-	 * Since host for openshift 3 server adapter is defined by the selected route,
-	 * there is no sense in editing 'Host name' input. It should be disabled.
-	 */
-	private void disableHostName() {
-		if(editorPart == null) {
-			//Formal, should never happen.
-			return;
-		}
-		try {
-			Field f = editorPart.getClass().getDeclaredField("hostname");
-			f.setAccessible(true);
-			Control hostname = (Control)f.get(editorPart);
-			hostname.setEnabled(false);
-		} catch (Exception e) {
-			OpenShiftUIActivator.getDefault().getLogger().logError(e);
-		}
 	}
 
 	private Composite createControls(Composite parent, OpenShiftServerEditorModel model) {
